@@ -23,13 +23,14 @@ public class RecipeDetailActivity extends AppCompatActivity implements RecipeDet
     static String STACK_RECIPE_STEP_DETAIL = "STACK_RECIPE_STEP_DETAIL";
 
 
-    private ArrayList<Recipe> recipe;
     String recipeName;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_recipe_detail);
+
+        ArrayList<Recipe> recipe;
 
         if (savedInstanceState == null) {
 

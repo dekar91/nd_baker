@@ -3,9 +3,14 @@ package dekar.bakerapp.views;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+import android.support.annotation.VisibleForTesting;
+import android.support.test.espresso.IdlingResource;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import dekar.bakerapp.R;
+import dekar.bakerapp.SimpleIdlingResource;
 import dekar.bakerapp.adapters.RecipeAdapter;
 import dekar.bakerapp.models.Recipe;
 
@@ -19,6 +24,21 @@ public class RecipeActivity extends AppCompatActivity implements RecipeAdapter.L
     static String SELECTED_STEPS="Selected_Steps";
     static String SELECTED_INDEX="Selected_Index";
 
+    @Nullable
+    private IdlingResource mIdlingResource;
+
+    /**
+     * Only called from test, creates and returns a new {@link SimpleIdlingResource}.
+     */
+    @VisibleForTesting
+    @NonNull
+    public IdlingResource getIdlingResource() {
+        if (mIdlingResource == null) {
+            mIdlingResource = new SimpleIdlingResource();
+        }
+        return mIdlingResource;
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -30,6 +50,8 @@ public class RecipeActivity extends AppCompatActivity implements RecipeAdapter.L
        getSupportActionBar().setHomeButtonEnabled(false);
        getSupportActionBar().setDisplayHomeAsUpEnabled(false);
        getSupportActionBar().setTitle(R.string.app_name);
+
+        getIdlingResource();
     }
 
     @Override

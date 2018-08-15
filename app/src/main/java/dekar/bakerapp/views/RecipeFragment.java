@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 
 //import dekar.bakerapp.IdlingResource.SimpleIdlingResource;
 import dekar.bakerapp.R;
+import dekar.bakerapp.SimpleIdlingResource;
 import dekar.bakerapp.adapters.RecipeAdapter;
 import dekar.bakerapp.models.Recipe;
 import dekar.bakerapp.retrofit.IRecipe;
@@ -51,6 +52,12 @@ public class RecipeFragment extends Fragment {
         IRecipe iRecipe = RetrofitBuilder.Retrieve();
         Call<ArrayList<Recipe>> recipe = iRecipe.getRecipe();
 
+        final SimpleIdlingResource idlingResource = (SimpleIdlingResource)((RecipeActivity)getActivity()).getIdlingResource();
+
+        if (idlingResource != null) {
+            idlingResource.setIdleState(false);
+        }
+
         recipe.enqueue(new Callback<ArrayList<Recipe>>() {
             @Override
             public void onResponse(Call<ArrayList<Recipe>> call, Response<ArrayList<Recipe>> response) {
@@ -62,6 +69,11 @@ public class RecipeFragment extends Fragment {
                 Bundle recipesBundle = new Bundle();
                 recipesBundle.putParcelableArrayList(ALL_RECIPES, recipes);
                 recipesAdapter.setRecipeData(recipes,getContext());
+
+                recipesAdapter.setRecipeData(recipes,getContext());
+                if (idlingResource != null) {
+                    idlingResource.setIdleState(true);
+                }
 
 
             }
