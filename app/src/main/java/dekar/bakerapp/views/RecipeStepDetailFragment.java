@@ -5,11 +5,13 @@ import android.content.Context;
 import android.content.res.Configuration;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.constraint.ConstraintLayout;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -123,16 +125,9 @@ public class RecipeStepDetailFragment extends Fragment {
             simpleExoPlayerView.setVisibility(View.VISIBLE);
             initializePlayer(Uri.parse(steps.get(selectedIndex).getVideoURL()));
 
-            if (getResources().getInteger(R.integer.recipeColumns) > 1) {
-                getActivity().findViewById(R.id.fragment_container2).setLayoutParams(new LinearLayout.LayoutParams(-1, -2));
-                simpleExoPlayerView.setResizeMode(AspectRatioFrameLayout.RESIZE_MODE_FIXED_WIDTH);
-            } else if (isInLandscapeMode(getContext())) {
-                recipeDefaulsText.setVisibility(View.GONE);
-            }
         } else {
             simpleExoPlayerView.setVisibility(View.GONE);
             player = null;
-            simpleExoPlayerView.setLayoutParams(new LinearLayout.LayoutParams(300, 300));
         }
 
 

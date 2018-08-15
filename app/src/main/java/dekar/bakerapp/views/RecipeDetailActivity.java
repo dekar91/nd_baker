@@ -46,7 +46,7 @@ public class RecipeDetailActivity extends AppCompatActivity implements RecipeDet
                     .replace(R.id.fragment_container, fragment).addToBackStack(STACK_RECIPE_DETAIL)
                     .commit();
 
-            if (findViewById(R.id.recipe_linear_layout).getTag() != null && getResources().getInteger(R.integer.recipeColumns) > 1) {
+            if (getResources().getInteger(R.integer.recipeColumns) > 1) {
 
                 final RecipeStepDetailFragment fragment2 = new RecipeStepDetailFragment();
                 fragment2.setArguments(selectedRecipeBundle);
@@ -103,7 +103,7 @@ public class RecipeDetailActivity extends AppCompatActivity implements RecipeDet
         stepBundle.putString("Title", recipeName);
         fragment.setArguments(stepBundle);
 
-        if (findViewById(R.id.recipe_linear_layout).getTag() != null && getResources().getInteger(R.integer.recipeColumns) > 1) {
+        if (getResources().getInteger(R.integer.recipeColumns) > 1) {
             fragmentManager.beginTransaction()
                     .replace(R.id.fragment_container2, fragment).addToBackStack(STACK_RECIPE_STEP_DETAIL)
                     .commit();
