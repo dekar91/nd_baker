@@ -20,7 +20,7 @@ public final class RetrofitBuilder {
         OkHttpClient.Builder httpClientBuilder = new OkHttpClient.Builder();
 
         iRecipe = new Retrofit.Builder()
-                .baseUrl(BuildConfig.RECIPE_URL)
+                .baseUrl(BuildConfig.BASE_RECIPE_URL)
                 .addConverterFactory(GsonConverterFactory.create(gson))
                 .callFactory(httpClientBuilder.build())
                 .build().create(IRecipe.class);
