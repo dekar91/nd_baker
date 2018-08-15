@@ -1,25 +1,18 @@
 
 package dekar.bakerapp.views;
 
-import android.content.Context;
-import android.content.res.Configuration;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.constraint.ConstraintLayout;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.android.exoplayer2.DefaultLoadControl;
 import com.google.android.exoplayer2.ExoPlayerFactory;
-import com.google.android.exoplayer2.LoadControl;
 import com.google.android.exoplayer2.SimpleExoPlayer;
 import com.google.android.exoplayer2.source.ExtractorMediaSource;
 import com.google.android.exoplayer2.source.MediaSource;
@@ -123,7 +116,14 @@ public class RecipeStepDetailFragment extends Fragment {
 
         if (!videoURL.isEmpty()) {
             simpleExoPlayerView.setVisibility(View.VISIBLE);
-            initializePlayer(Uri.parse(steps.get(selectedIndex).getVideoURL()));
+            long playerPosition = 0;
+            boolean isPlayingNow = true;
+            if(null != savedInstanceState){
+                playerPosition = savedInstanceState.getLong("playerPosition", 0);
+                isPlayingNow = savedInstanceState.getBoolean("playerIsPlayingNow", true);
+            }
+
+            initializePlayer(Uri.parse(steps.get(selectedIndex).getVideoURL()), playerPosition, isPlayingNow);
 
         } else {
             simpleExoPlayerView.setVisibility(View.GONE);
@@ -167,7 +167,7 @@ public class RecipeStepDetailFragment extends Fragment {
         return rootView;
     }
 
-    private void initializePlayer(Uri mediaUri) {
+    private void initializePlayer(Uri mediaUri, long position, boolean isPlayingNow) {
         if (player == null) {
             TrackSelection.Factory videoTrackSelectionFactory = new AdaptiveTrackSelection.Factory(bandwidthMeter);
             DefaultTrackSelector trackSelector = new DefaultTrackSelector(videoTrackSelectionFactory);
@@ -180,7 +180,9 @@ public class RecipeStepDetailFragment extends Fragment {
             MediaSource mediaSource = new ExtractorMediaSource.Factory(dataSource)
                     .createMediaSource(mediaUri);
             player.prepare(mediaSource);
-            player.setPlayWhenReady(true);
+            player.seekTo(position);
+            player.setPlayWhenReady(isPlayingNow);
+
         }
     }
 
@@ -190,10 +192,13 @@ public class RecipeStepDetailFragment extends Fragment {
         currentState.putParcelableArrayList(SELECTED_STEPS, steps);
         currentState.putInt(SELECTED_INDEX, selectedIndex);
         currentState.putString("Title", recipeName);
-    }
 
-    public boolean isInLandscapeMode(Context context) {
-        return (context.getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE);
+        if(null != player) {
+            boolean isPlayWhenReady = player.getPlayWhenReady();
+            currentState.putBoolean("playerIsPlayingNow", isPlayWhenReady);
+            currentState.putLong("playerPosition", player.getCurrentPosition());
+        }
+
     }
 
     @Override
