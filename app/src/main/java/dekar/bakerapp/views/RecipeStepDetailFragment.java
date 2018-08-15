@@ -177,6 +177,9 @@ public class RecipeStepDetailFragment extends Fragment {
     }
 
     private void initializePlayer(PlayerSettings mPLayerSettings, boolean forceRecreate) {
+        if(forceRecreate)
+            player.release();
+
         if (player == null || forceRecreate) {
             TrackSelection.Factory videoTrackSelectionFactory = new AdaptiveTrackSelection.Factory(bandwidthMeter);
             DefaultTrackSelector trackSelector = new DefaultTrackSelector(videoTrackSelectionFactory);
@@ -222,7 +225,9 @@ public class RecipeStepDetailFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        initializePlayer(mPlayerSettings, true);
+        if (player != null) {
+            initializePlayer(mPlayerSettings, true);
+        }
     }
 
     @Override
