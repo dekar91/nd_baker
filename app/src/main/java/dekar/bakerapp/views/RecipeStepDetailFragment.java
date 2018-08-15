@@ -28,6 +28,7 @@ import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
 import com.google.android.exoplayer2.util.Util;
 import com.squareup.picasso.Picasso;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -42,12 +43,19 @@ import static dekar.bakerapp.views.RecipeActivity.SELECTED_STEPS;
 
 public class RecipeStepDetailFragment extends Fragment {
     private PlayerView simpleExoPlayerView;
-    private SimpleExoPlayer player;
+    private  SimpleExoPlayer player;
     private BandwidthMeter bandwidthMeter;
     private ArrayList<Step> steps = new ArrayList<>();
     private int selectedIndex;
     ArrayList<Recipe> recipe;
     String recipeName;
+    private static String url;
+    private static class PlayerSettings implements Serializable {
+        public String url = "";
+        public boolean isPlayingNow = true;
+        public long position = 0;
+    }
+    private static PlayerSettings mPlayerSettings;
 
     public RecipeStepDetailFragment() {
 
@@ -73,6 +81,7 @@ public class RecipeStepDetailFragment extends Fragment {
             selectedIndex = savedInstanceState.getInt(SELECTED_INDEX);
             recipeName = savedInstanceState.getString("Title");
 
+            mPlayerSettings = (PlayerSettings) savedInstanceState.getSerializable("PlayerSettings");
 
         } else {
             steps = getArguments().getParcelableArrayList(SELECTED_STEPS);
@@ -87,6 +96,7 @@ public class RecipeStepDetailFragment extends Fragment {
                 selectedIndex = 0;
             }
 
+            mPlayerSettings = new PlayerSettings();
         }
 
 
@@ -116,15 +126,10 @@ public class RecipeStepDetailFragment extends Fragment {
 
         if (!videoURL.isEmpty()) {
             simpleExoPlayerView.setVisibility(View.VISIBLE);
-            long playerPosition = 0;
-            boolean isPlayingNow = true;
-            if(null != savedInstanceState){
-                playerPosition = savedInstanceState.getLong("playerPosition", 0);
-                isPlayingNow = savedInstanceState.getBoolean("playerIsPlayingNow", true);
-            }
+            url = steps.get(selectedIndex).getVideoURL();
+            mPlayerSettings.url = url;
 
-            initializePlayer(Uri.parse(steps.get(selectedIndex).getVideoURL()), playerPosition, isPlayingNow);
-
+            initializePlayer(mPlayerSettings);
         } else {
             simpleExoPlayerView.setVisibility(View.GONE);
             player = null;
@@ -167,8 +172,12 @@ public class RecipeStepDetailFragment extends Fragment {
         return rootView;
     }
 
-    private void initializePlayer(Uri mediaUri, long position, boolean isPlayingNow) {
-        if (player == null) {
+    private void initializePlayer(PlayerSettings mPLayerSettings) {
+        initializePlayer(mPLayerSettings, false);
+    }
+
+    private void initializePlayer(PlayerSettings mPLayerSettings, boolean forceRecreate) {
+        if (player == null || forceRecreate) {
             TrackSelection.Factory videoTrackSelectionFactory = new AdaptiveTrackSelection.Factory(bandwidthMeter);
             DefaultTrackSelector trackSelector = new DefaultTrackSelector(videoTrackSelectionFactory);
 
@@ -178,11 +187,10 @@ public class RecipeStepDetailFragment extends Fragment {
             String userAgent = Util.getUserAgent(getContext(), getString(R.string.app_name));
             DataSource.Factory dataSource = new DefaultDataSourceFactory(getContext(), userAgent);
             MediaSource mediaSource = new ExtractorMediaSource.Factory(dataSource)
-                    .createMediaSource(mediaUri);
+                    .createMediaSource(Uri.parse(mPLayerSettings.url));
             player.prepare(mediaSource);
-            player.seekTo(position);
-            player.setPlayWhenReady(isPlayingNow);
-
+            player.seekTo(mPlayerSettings.position);
+            player.setPlayWhenReady(mPLayerSettings.isPlayingNow);
         }
     }
 
@@ -194,9 +202,10 @@ public class RecipeStepDetailFragment extends Fragment {
         currentState.putString("Title", recipeName);
 
         if(null != player) {
-            boolean isPlayWhenReady = player.getPlayWhenReady();
-            currentState.putBoolean("playerIsPlayingNow", isPlayWhenReady);
-            currentState.putLong("playerPosition", player.getCurrentPosition());
+            mPlayerSettings.isPlayingNow = player.getPlayWhenReady();
+            mPlayerSettings.position = player.getCurrentPosition();
+            mPlayerSettings.url = url;
+            currentState.putSerializable("PlayerSettings", mPlayerSettings);
         }
 
     }
@@ -208,6 +217,12 @@ public class RecipeStepDetailFragment extends Fragment {
             player.stop();
             player.release();
         }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        initializePlayer(mPlayerSettings, true);
     }
 
     @Override
