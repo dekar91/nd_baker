@@ -25,7 +25,6 @@
             android:textAlignment="center"
             android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
 
-
         <ImageView
             android:id="@+id/recipeImage"
             android:layout_width="match_parent"

@@ -22,17 +22,26 @@
             android:layout_marginBottom="20dp"
             android:layout_marginLeft="0dp"
             android:layout_margin="0dp" />
+        <TextView
+            android:id="@+id/no_video"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/no_video"
+            android:textAlignment="center"
+            android:visibility="gone"
+            />
         <ImageView
             android:id="@+id/thumbImage"
             android:layout_gravity="start"
-            android:paddingRight="15dp"
+            android:paddingStart="15dp"
+            android:paddingEnd="15dp"
             android:elevation="1dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
         <TextView
             tool:text="my textbox"
             android:layout_width="match_parent"
-            android:textColor="@android:color/white"
+
             android:id="@+id/recipe_step_detail_text"
             android:textSize="20sp"
             android:layout_height="wrap_content"
@@ -53,14 +62,18 @@
             android:elevation="6dp"
             android:layout_width="70dp"
             android:layout_height="70dp"
-            android:layout_margin="10dp" />
+            android:layout_margin="10dp"
+            style="?attr/borderlessButtonStyle"
+            />
 
         <Button
             android:id="@+id/nextStep"
             android:padding="40dp"
             android:layout_margin="10dp"
             android:layout_width="70dp"
-            android:layout_height="70dp" />
+            android:layout_height="70dp"
+            style="?attr/borderlessButtonStyle"
+            />
     </LinearLayout>
 
 

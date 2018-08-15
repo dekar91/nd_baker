@@ -1,4 +1,7 @@
 <resources>
     <string name="app_name">Baking App</string>
     <string name="appwidget_text">RECIPE INGREDIENTS WILL APPEAR HERE AFTER LAUNCHING &quot;BAKING APP&quot;</string>
+    <string name="no_video">There is no video for this step</string>
+    <string name="recipe_last_page">You already are in the Last step of the recipe</string>
+    <string name="recipe_first_page">You already are in the First step of the recipe</string>
 </resources>

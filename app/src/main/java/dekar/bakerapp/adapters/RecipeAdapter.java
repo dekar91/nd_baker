@@ -53,7 +53,7 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.RecyclerVi
        holder.textRecyclerView.setText(lRecipes.get(position).getName());
         String imageUrl=lRecipes.get(position).getImage();
 
-        if (imageUrl!="") {
+        if (!imageUrl.trim().isEmpty()) {
             Uri builtUri = Uri.parse(imageUrl).buildUpon().build();
             Picasso.with(mContext).load(builtUri).into(holder.imageRecyclerView);
         }
@@ -73,8 +73,8 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.RecyclerVi
         public RecyclerViewHolder(View itemView) {
             super(itemView);
 
-            textRecyclerView = (TextView) itemView.findViewById(R.id.title);
-            imageRecyclerView = (ImageView) itemView.findViewById(R.id.recipeImage);
+            textRecyclerView = itemView.findViewById(R.id.title);
+            imageRecyclerView = itemView.findViewById(R.id.recipeImage);
 
             itemView.setOnClickListener(this);
         }

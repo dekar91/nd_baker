@@ -4,7 +4,6 @@
     android:initialLayout="@layout/baking_widget_before_recipe"
     android:minHeight="80dp"
     android:minWidth="150dp"
-    android:previewImage="@drawable/ic_chrome_reader_mode_black_48dp"
     android:resizeMode="horizontal|vertical"
     android:updatePeriodMillis="1800000"
     android:widgetCategory="home_screen" />

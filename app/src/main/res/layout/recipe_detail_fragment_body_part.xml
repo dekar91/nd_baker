@@ -23,7 +23,6 @@
             android:layout_width="match_parent"
             android:layout_height="150dp"
             android:textSize="16sp"
-            android:textColor="#E0E0E0"
             android:id="@+id/recipe_detail_text"
             android:padding="15dp" />
     </ScrollView>
@@ -32,9 +31,5 @@
             android:layout_margin="15dp"
             android:id="@+id/recipe_detail_recycler"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"     />
-
-
+            android:layout_height="wrap_content"/>
 </LinearLayout>
-
-

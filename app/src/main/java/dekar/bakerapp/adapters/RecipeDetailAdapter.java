@@ -68,7 +68,7 @@ public class RecipeDetailAdapter extends RecyclerView.Adapter<RecipeDetailAdapte
         public RecyclerViewHolder(View itemView) {
             super(itemView);
 
-            textRecyclerView = (TextView) itemView.findViewById(R.id.shortDescription);
+            textRecyclerView = itemView.findViewById(R.id.shortDescription);
 
             itemView.setOnClickListener(this);
         }

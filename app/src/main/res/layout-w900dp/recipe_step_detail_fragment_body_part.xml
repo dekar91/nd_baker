@@ -17,21 +17,27 @@
         android:layout_marginLeft="0dp"
         android:layout_marginRight="0dp"
         android:layout_marginTop="0dp" />
-
+    <TextView
+        android:id="@+id/no_video"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/no_video"
+        android:textAlignment="center"
+        android:visibility="gone"
+        />
     <ImageView
         android:id="@+id/thumbImage"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="start"
         android:elevation="1dp"
-        android:paddingStart="15dp" />
+        android:paddingStart="15dp"
         android:paddingEnd="15dp" />
 
     <TextView
         android:id="@+id/recipe_step_detail_text"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textColor="@android:color/white" />
+        android:layout_height="wrap_content"/>
 
     <LinearLayout
         android:layout_width="wrap_content"
@@ -46,6 +52,7 @@
             android:layout_margin="10dp"
             android:background="@drawable/ic_navigate_before_black_18dp"
             android:backgroundTintMode="src_over"
+            style="?attr/borderlessButtonStyle"
             android:elevation="6dp"
             android:padding="40dp" />
 
@@ -56,6 +63,7 @@
             android:layout_margin="10dp"
             android:background="@drawable/ic_navigate_next_black_18dp"
             android:backgroundTintMode="src_over"
+            style="?attr/borderlessButtonStyle"
             android:padding="40dp" />
     </LinearLayout>
 

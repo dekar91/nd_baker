@@ -24,7 +24,6 @@
             android:layout_width="match_parent"
             android:layout_height="150dp"
             android:padding="15dp"
-            android:textColor="#E0E0E0"
             android:textSize="16sp" />
     </ScrollView>
 
@@ -33,8 +32,4 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="15dp" />
-
-
 </LinearLayout>
-
-
